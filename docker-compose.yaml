@@ -1,0 +1,10 @@
+services:
+  zustand:
+    container_name: zustand
+    build:
+      context: .
+      dockerfile: dockerfile
+      target: prod
+
+    ports:
+      - "3000:3000"
