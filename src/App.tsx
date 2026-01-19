@@ -1,8 +1,10 @@
 
 import { useState } from "react";
 import "./App.css";
-import { useCounter } from "./store/counter";
-import { useUser } from "./store/user";
+import { useCounter } from "./zustandStore/counter";
+import { useUser } from "./zustandStore/user";
+import { useAppDispatch, useAppSelector } from "./reduxStore/store";
+import { increment as reduxInc, decrement as reduxDec } from "./reduxStore/counter.slice";
 
 function App() {
   
@@ -16,16 +18,22 @@ function App() {
   const logIn = useUser(state => state.setLogin);
   const logout = useUser(state => state.setLogout);
   const updateUser = useUser(state => state.updateUser);
-  
+  const reduxCounter = useAppSelector((state) => state.counterReducer.value);
+  const dispatch = useAppDispatch();
   return (
     <div className="flex justify-center min-h-screen gap-2">
       <pre  > {JSON.stringify(user, null, 2)} </pre>
       
-      <div>
+      <div className="flex flex-col gap-4 p-2">
       <div className="flex items-center justify-center gap-2">
         <button className='border py-2 px-4 rounded-lg' onClick={decrement}>-</button>
         count is {count}
         <button className='border py-2 px-4 rounded-lg' onClick={increment}>+</button>
+      </div>
+      <div className="flex items-center justify-center gap-2">
+        <button className='border py-2 px-4 rounded-lg' onClick={()=>dispatch(reduxDec())}>-</button>
+        count is {reduxCounter}
+        <button className='border py-2 px-4 rounded-lg' onClick={()=>dispatch(reduxInc())}>+</button>
       </div>
       
       <p> Status: {isLogedIn.toString()} </p>
